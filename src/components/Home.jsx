@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { addToPastes, updateToPastes } from '../redux/pasteSlice';
+import toast from 'react-hot-toast';
 
 const Home = () => {
     const [title, setTitle] = useState('');
@@ -20,6 +21,12 @@ const Home = () => {
     }, [pasteId])
 
     function createPaste() {
+
+         if (!title.trim() || !value.trim()) {
+        toast("Title and content can't be empty.")
+        return; // stop execution
+        }
+        
         const paste = {
             title: title,
             content: value,
@@ -45,22 +52,22 @@ const Home = () => {
 
   return (
     <div>
-        <div className='flex flex-row gap-7 place-content-between'>
+        <div className='flex flex-row gap-7 place-content-between  mt-4'>
             <input 
-                className='p-1 rounded-2xl border mt-2 w-[62%] pl-4'
+                className='p-1 rounded-2xl border w-[62%] pl-4'
                 type="text"
                 placeholder='enter title here'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)} 
             />
 
-            <button onClick={createPaste} className='p-2 rounded-2xl mt-2'>
+            <button onClick={createPaste} className='p-2 rounded-2xl'>
                 {
                     pasteId ? "Update My Paste" : "Create My Paste"
                 }
             </button>
         </div>
-        <div className='mt-8'>
+        <div className='mt-4'>
             <textarea 
                 className='rounded-2xl mt-4 min-w-[600px] border p-4'
                 value={value}

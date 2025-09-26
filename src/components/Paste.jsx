@@ -16,13 +16,17 @@ const Paste = () => {
   const filteredData = pastes.filter((paste) => paste.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   function handleDelete(pasteId) {
-    dispatch(removeFromPastes(pasteId));
+    const confirmed = window.confirm("Are you sure you want to delete this paste?");
+    if(confirmed) {
+      dispatch(removeFromPastes(pasteId));
+      toast.success("Paste deleted successfully");
+    }
   }
 
   return (
     <div>
       <input 
-        className='p-2 border rounded-2xl min-w-[600px] mt-5'
+        className='p-2.5 pl-4 border rounded-2xl min-w-[600px] mt-4'
         type="search" 
         placeholder='search here' 
         value={searchTerm} 
@@ -35,10 +39,10 @@ const Paste = () => {
             (paste) => {
               return (
                 <div className='border rounded-2xl' key={paste?._id}>
-                  <div className='mt-2'>
-                    {paste.title}
+                  <div className='mt-2 text-violet-600'>
+                    <strong>{paste.title}</strong>
                   </div>
-                  <div>
+                  <div className=''>
                     {paste.content}
                   </div>
                   <div className='flex flex-row gap-4 place-content-evenly my-2'>
@@ -70,8 +74,8 @@ const Paste = () => {
 
                   </div>
 
-                  <div className='my-2'>
-                    {moment(paste.createdAt).format("MMMM D, YYYY, hh:mm:ss A")}
+                  <div className='my-2 text-green-500'>
+                    {moment(paste.createdAt).format("MMMM D, YYYY, hh:mm A")}
                   </div>
                 </div>
               )
